@@ -7,7 +7,8 @@ bp = Blueprint("api", __name__)
  
 @bp.route("/") 
 def home(): 
-    return jsonify({"message": "Notes API", "status": "running", "version": "1.0"}) 
+    return jsonify({"message": "Notes API", "status": "running"}) 
+ 
  
 @bp.route("/health") 
 def health(): 
@@ -36,7 +37,7 @@ def get_notes():
 def create_note(): 
     data = request.get_json() 
     if not data or "title" not in data or "content" not in data: 
-        return jsonify({"error": "Title and content are required"}), 400 
+        return jsonify({"error": "Title and content required"}), 400 
     note = Note( 
         title=data["title"], 
         content=data["content"], 
@@ -64,6 +65,8 @@ def update_note(note_id):
         note.category = data["category"] 
     if "priority" in data: 
         note.priority = data["priority"] 
+    if "is_archived" in data: 
+        note.is_archived = data["is_archived"] 
     db.session.commit() 
     return jsonify(note.to_dict()) 
  
@@ -84,10 +87,3 @@ def get_stats():
         "archived": archived, 
         "categories": [{"name": c[0], "count": c[1]} for c in categories] 
     }) 
- 
-@bp.route("/notes/archive/<int:note_id>", methods=["POST"]) 
-def archive_note(note_id): 
-    note = Note.query.get_or_404(note_id) 
-    note.is_archived = True 
-    db.session.commit() 
-    return jsonify(note.to_dict()) 
