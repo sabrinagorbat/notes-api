@@ -73,6 +73,7 @@ def delete_note(note_id):
     db.session.delete(note) 
     db.session.commit() 
     return "", 204 
+ 
 @bp.route("/notes/stats", methods=["GET"]) 
 def get_stats(): 
     total = Note.query.count() 
