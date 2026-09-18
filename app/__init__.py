@@ -7,6 +7,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+    app.json.ensure_ascii = False
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///notes.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-key")
