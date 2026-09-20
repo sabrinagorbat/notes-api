@@ -89,3 +89,17 @@ json
 Проект развернут на Render.com
 
 Ссылка: https://notes-api-ja0n.onrender.com
+
+## 🧪 Тесты
+
+```bash
+pytest tests/ -v
+
+cd scripts
+python generate_logs.py
+python log_parser_slow.py
+python log_parser_fast.py
+
+docker build -t notes-api .
+docker run -p 5000:5000 notes-api
+
